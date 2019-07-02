@@ -1,0 +1,7 @@
+*.o
+*.a
+*.so
+!*.c
+!*.h
+!Makefile
+!./user_v4l2/
