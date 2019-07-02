@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/ioctl.h>
-#include <linux/videodev2.h>
 #include <fcntl.h>
 #include <poll.h>
 #include <signal.h>
@@ -10,11 +9,13 @@
 #include <string.h>
 #include <errno.h>
 
+#include <userv4l2capture.h>
+
 int user_v4l2_open(const char *device_name, int flag)
 {
 	int fd_video;
 
-	fd_video = open(DEVICE_NAME, flag);
+	fd_video = open(device_name, flag);
 	if (fd_video < 0)
 		printf("v4l2 open video device fail, %s\n", strerror(errno));
 
@@ -87,7 +88,7 @@ void user_v4l2_enum_fmt(const int dev)
 }
 
 /* get fmt for type V4L2_BUF_TYPE_VIDEO_CAPTURE only */
-int user_v4l2_get_fmt(const int dev,  struct v4l2_format *fmt)
+int user_v4l2_get_fmt(const int dev, struct v4l2_format *fmt)
 {
 	int ret;
 
@@ -110,7 +111,7 @@ int user_v4l2_get_fmt(const int dev,  struct v4l2_format *fmt)
 	return ret;
 }
 
-int user_v4l2_set_fmt(const int dev,  struct v4l2_format *fmt)
+int user_v4l2_set_fmt(const int dev, struct v4l2_format *fmt)
 {
 	int ret;
 

@@ -1,10 +1,15 @@
-CC:= gcc
-CFLAGS := -Wall
-TARGET := video_capture
+SOURCE_DIR := $(shell pwd)
+BUILD_DIR := ${SOURCE_DIR}/build
 
-${TARGET}: %: %.o
-	${CC} -o $@ $^
+.PHONY: all
 
-%.o: %.c
-	${CC} ${CFLAGS} -c $^ -o $@
+all:
+	mkdir -p $(BUILD_DIR)
+	cd $(BUILD_DIR); \
+	cmake .. \
+		-DCMAKE_INSTALL_PREFIX=$(BUILD_DIR); \
+	$(MAKE); \
+	$(MAKE) install
 
+clean:
+	rm -fr $(BUILD_DIR)

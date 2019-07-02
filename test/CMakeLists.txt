@@ -1,0 +1,10 @@
+set(target video_capture)
+set(depend_lib userv4l2)
+FILE(GLOB SRC_LIST "*.c")
+
+FOREACH(src ${SRC_LIST})
+	get_filename_component(target ${src} NAME_WE)
+	add_executable(${target} ${src})
+	target_link_libraries(${target} ${depend_lib})
+	install(TARGETS ${target} RUNTIME DESTINATION bin)
+ENDFOREACH(src)

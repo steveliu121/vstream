@@ -2,15 +2,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
+#include <fcntl.h>
 
-#include <user_v4l2_capture.h>
+#include <userv4l2capture.h>
 
 #define DEVICE_NAME "/dev/video0"
-#define MAX_BUF_NUM 4
-struct buffer_info {
-	void * vm_start;
-	unsigned int size;
-};
 struct buffer_info buf_info[MAX_BUF_NUM];
 
 int g_exit;
