@@ -1,4 +1,12 @@
-set(target video_capture)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+
+PROJECT(example)
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
+
+LINK_DIRECTORIES($ENV{ROOT_DIR}/.yarina/share/lib)
+INCLUDE_DIRECTORIES($ENV{ROOT_DIR}/.yarina/share/include)
+
 set(depend_lib userv4l2)
 FILE(GLOB SRC_LIST "*.c")
 
