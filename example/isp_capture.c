@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 	int buf_num;
 	int i;
 	int ret;
-	char ch;
+	int ch;
 	int width = 1280;
 	int height = 720;
 	int o_yuv = 0;
