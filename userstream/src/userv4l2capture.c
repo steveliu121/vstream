@@ -250,7 +250,7 @@ int user_v4l2_request_bufs(const int dev, int buf_num)
 	int ret;
 	struct v4l2_requestbuffers reqbufs;
 
-	if ((buf_num <= 0) || (buf_num > MAX_BUF_NUM))
+	if ((buf_num <= 0) || (buf_num > MAX_ISP_BUF_NUM))
 		return -1;
 
 	reqbufs.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
@@ -269,7 +269,7 @@ int user_v4l2_request_bufs(const int dev, int buf_num)
 /* query buffers for type V4L2_BUF_TYPE_VIDEO_CAPTURE only */
 /* and V4L2_MEMORY_MMAP only*/
 int user_v4l2_query_map_buf(const int dev, int buf_index,
-		struct buffer_info *buf_info)
+		struct isp_buffer_info *buf_info)
 {
 	int ret;
 	struct v4l2_buffer buffer;
@@ -299,7 +299,7 @@ int user_v4l2_query_map_buf(const int dev, int buf_index,
 	return 0;
 }
 
-int user_v4l2_unmap(struct buffer_info *buf_info)
+int user_v4l2_unmap(struct isp_buffer_info *buf_info)
 {
 	if (buf_info->vm_start && buf_info->size)
 		munmap(buf_info->vm_start, buf_info->size);

@@ -7,7 +7,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
 LINK_DIRECTORIES($ENV{ROOT_DIR}/.yarina/share/lib)
 INCLUDE_DIRECTORIES($ENV{ROOT_DIR}/.yarina/share/include)
 
-set(depend_lib userv4l2)
+set(depend_lib userstream)
 FILE(GLOB SRC_LIST "*.c")
 
 FOREACH(src ${SRC_LIST})

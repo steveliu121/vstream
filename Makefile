@@ -6,7 +6,7 @@ SHARE_DIR := ${SOURCE_DIR}/.yarina/share
 OPENLIB := ${SOURCE_DIR}/openlib/.yarina
 CONTAINER := ${SOURCE_DIR}/container/.yarina
 ENCODER := ${SOURCE_DIR}/encoder/.yarina
-LIBUSERV4L2 := ${SOURCE_DIR}/libuserv4l2/.yarina
+USERSTREAM := ${SOURCE_DIR}/userstream/.yarina
 RTMPCLI := ${SOURCE_DIR}/rtmpcli/.yarina
 EXAMPLE := ${SOURCE_DIR}/example/.yarina
 
@@ -22,7 +22,7 @@ all:
 	$(MAKE) -C ${CONTAINER}
 	$(MAKE) -C ${ENCODER}
 	$(MAKE) -C ${RTMPCLI}
-	$(MAKE) -C ${LIBUSERV4L2}
+	$(MAKE) -C ${USERSTREAM}
 	$(MAKE) -C ${EXAMPLE}
 
 clean:
@@ -30,7 +30,7 @@ clean:
 	$(MAKE) -C ${CONTAINER} clean
 	$(MAKE) -C ${ENCODER} clean
 	$(MAKE) -C ${RTMPCLI} clean
-	$(MAKE) -C ${LIBUSERV4L2} clean
+	$(MAKE) -C ${USERSTREAM} clean
 	$(MAKE) -C ${EXAMPLE} clean
 
 	rm -fr $(BUILD_DIR)
