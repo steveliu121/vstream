@@ -17,7 +17,9 @@ int user_isp_chn_create(struct isp_attr *attr)
 	if (fd_video < 0)
 		return -1;
 
+	user_v4l2_enum_fmt(fd_video);
 	user_v4l2_get_fmt(fd_video, &fmt);
+
 
 	fmt.fmt.pix.width = attr->width;
 	fmt.fmt.pix.height = attr->height;
@@ -122,6 +124,8 @@ int user_isp_buffer_recv(const int chn, struct isp_buffer *buffer)
 	int index;
 
 	index = user_v4l2_dqbuf(chn);
+	if (index < 0)
+	    return -1;
 
 	buffer->vm_addr = g_isp_profile.buf_info[index].vm_start;
 	buffer->size = g_isp_profile.buf_info[index].size;
@@ -131,14 +135,14 @@ int user_isp_buffer_recv(const int chn, struct isp_buffer *buffer)
 	return 0;
 }
 
-void user_isp_buffer_get(struct isp_buffer *buf)
+void user_isp_buffer_get(struct isp_buffer *buffer)
 {
-	buf->refcount++;
+	buffer->refcount++;
 }
 
-void user_isp_buffer_put(struct isp_buffer *buf)
+void user_isp_buffer_put(struct isp_buffer *buffer)
 {
-	buf->refcount--;
-	if (buf->refcount == 0)
-		user_v4l2_qbuf(g_isp_profile.chn, buf->index);
+	buffer->refcount--;
+	if (buffer->refcount == 0)
+		user_v4l2_qbuf(g_isp_profile.chn, buffer->index);
 }

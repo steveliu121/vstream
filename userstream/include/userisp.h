@@ -1,7 +1,7 @@
 #ifndef __USER_ISP_H
 #define __USER_ISP_H
 
-#include <userispapi.h>
+#include <uservideoapi.h>
 
 #ifdef __cplusplus
 extern "C" {

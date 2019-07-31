@@ -5,7 +5,7 @@
 #include <fcntl.h>
 #include <string.h>
 
-#include <userispapi.h>
+#include <uservideoapi.h>
 
 #define DEVICE_NAME "/dev/video0"
 
@@ -102,12 +102,16 @@ int main(int argc, char *argv[])
 
 	while (count-- && !g_exit) {
 		ret = user_isp_buffer_poll(isp_chn);
-		if (!ret) {
+		if (ret) {
 			usleep(10000);
 			continue;
 		}
 
-		user_isp_buffer_recv(isp_chn, &buffer);
+		ret = user_isp_buffer_recv(isp_chn, &buffer);
+		if (ret) {
+			usleep(10000);
+			continue;
+		}
 
 		if (o_mjpeg) {
 			sprintf(mjpeg_file, "mjpeg_%d", i++);
