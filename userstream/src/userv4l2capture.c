@@ -250,6 +250,8 @@ int user_v4l2_request_bufs(const int dev, int buf_num)
 	int ret;
 	struct v4l2_requestbuffers reqbufs;
 
+	memset(&reqbufs, 0, sizeof(reqbufs));
+
 	if ((buf_num <= 0) || (buf_num > MAX_ISP_BUF_NUM))
 		return -1;
 
@@ -273,6 +275,8 @@ int user_v4l2_query_map_buf(const int dev, int buf_index,
 {
 	int ret;
 	struct v4l2_buffer buffer;
+
+	memset(&buffer, 0, sizeof(buffer));
 
 	if (!buf_info)
 		return -1;
@@ -316,6 +320,8 @@ int user_v4l2_qbuf(const int dev, int buf_index)
 	int ret;
 	struct v4l2_buffer buffer;
 
+	memset(&buffer, 0, sizeof(buffer));
+
 	buffer.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
 	buffer.memory = V4L2_MEMORY_MMAP;
 	buffer.index = buf_index;
@@ -336,6 +342,8 @@ int user_v4l2_dqbuf(const int dev)
 {
 	int ret;
 	struct v4l2_buffer buffer;
+
+	memset(&buffer, 0, sizeof(buffer));
 
 	buffer.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
 	buffer.memory = V4L2_MEMORY_MMAP;
