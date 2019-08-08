@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
 	isp_attr.bufnum = 3;
 	isp_attr.fps = fps;
 	strcpy(isp_attr.dev_name, DEVICE_NAME);
-	isp_attr.fmt = USER_PIX_FMT_BGR24;
+	isp_attr.fmt = USER_PIX_FMT_RGB24;
 
 	h264_attr.width = width;
 	h264_attr.height = height;
