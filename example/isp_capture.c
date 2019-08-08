@@ -22,7 +22,7 @@ void print_usage(void)
 	printf("\t-h\tprint this help message\n");
 	printf("\t-m\tcapture mjpeg\n");
 	printf("\t-r <widthxheight>\tset resolution\n");
-	printf("\t-y\tcatpure yuv\n");
+	printf("\t-y\tcatpure isp(yuv/rgb)\n");
 }
 
 /* XXX crop & framerate not supported by current driver */
@@ -37,10 +37,10 @@ int main(int argc, char *argv[])
 	int fps = 20;
 	struct isp_attr attr;
 	struct isp_buffer buffer;
-	int o_yuv = 0;
+	int o_isp = 0;
 	int o_mjpeg = 0;
 
-	while ((ch = getopt(argc, argv, "hmr:y")) != -1) {
+	while ((ch = getopt(argc, argv, "hmr:i")) != -1) {
 		switch (ch) {
 		case 'm':
 			o_mjpeg = 1;
@@ -51,8 +51,8 @@ int main(int argc, char *argv[])
 				return -1;
 			}
 			break;
-		case 'y':
-			o_yuv = 1;
+		case 'i':
+			o_isp = 1;
 			break;
 		case 'h':
 			print_usage();
@@ -76,8 +76,8 @@ int main(int argc, char *argv[])
 	attr.bufnum = 3;
 	attr.fps = fps;
 	strcpy(attr.dev_name, DEVICE_NAME);
-	if (o_yuv)
-		attr.fmt = USER_PIX_FMT_YUYV;
+	if (o_isp)
+		attr.fmt = USER_PIX_FMT_BGR24;
 	else
 		attr.fmt = USER_PIX_FMT_MJPEG;
 
@@ -90,17 +90,13 @@ int main(int argc, char *argv[])
 
 	int count = 10;
 	char mjpeg_file[24];
+	char isp_file[24];
 	FILE *fp_mjpeg;
-	FILE *fp_yuv;
+	FILE *fp_isp;
 
 	i = 0;
 
-	if (o_yuv) {
-		count = 1200;
-		fp_yuv = fopen("yuv", "w+");
-	}
-
-	while (count-- && !g_exit) {
+	while (count && !g_exit) {
 		ret = user_isp_buffer_poll(isp_chn);
 		if (ret) {
 			usleep(10000);
@@ -122,14 +118,19 @@ int main(int argc, char *argv[])
 			fclose(fp_mjpeg);
 		}
 
-		if (o_yuv)
-			fwrite(buffer.vm_addr, 1,
-					buffer.size, fp_yuv);
-		user_isp_buffer_put(&buffer);
-	}
+		if (o_isp) {
+			sprintf(isp_file, "isp_%d.raw", i++);
+			fp_isp = fopen(isp_file, "w+");
 
-	if (o_yuv)
-		fclose(fp_yuv);
+			fwrite(buffer.vm_addr, 1,
+					buffer.size, fp_isp);
+			fclose(fp_isp);
+		}
+
+	printf("one frame[%d]\n", buffer.size);
+		user_isp_buffer_put(&buffer);
+	count--;
+	}
 
 	user_isp_chn_disable(isp_chn);
 
