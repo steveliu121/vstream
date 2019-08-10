@@ -2,5 +2,5 @@ add_definitions(-DSTANDALONE -D__STDC_CONSTANT_MACROS -D__STDC_LIMIT_MACROS -DTA
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -U_FORTIFY_SOURCE -ftree-vectorize -pipe -Wno-psabi")
 include_directories(${SDKSTAGE}/opt/vc/include/ ${SDKSTAGE}/opt/vc/include/interface/vcos/pthreads ${SDKSTAGE}/opt/vc/include/interface/vmcs_host/linux ${SDKSTAGE}/opt/vc/src/hello_pi/libs/ilclient ${SDKSTAGE}/opt/vc/src/hello_pi/libs/vgfont ${SDKSTAGE}/opt/vc/src/hello_pi/libs/revision)
 link_directories(${SDKSTAGE}/opt/vc/lib/ ${SDKSTAGE}/opt/vc/src/hello_pi/libs/ilclient ${SDKSTAGE}/opt/vc/src/hello_pi/libs/vgfont ${SDKSTAGE}/opt/vc/src/hello_pi/libs/revision)
-set(depend_lib "${depend_lib} brcmGLESv2 brcmEGL openmaxil bcm_host vcos vchiq_arm pthread rt m")
+set(depend_lib ${depend_lib} ilclient brcmGLESv2 brcmEGL openmaxil bcm_host vcos vchiq_arm pthread rt m)
 
