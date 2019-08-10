@@ -22,7 +22,8 @@ void print_usage(void)
 	printf("\t-h\tprint this help message\n");
 	printf("\t-m\tcapture mjpeg\n");
 	printf("\t-r <widthxheight>\tset resolution\n");
-	printf("\t-y\tcatpure isp(yuv/rgb)\n");
+	printf("\t-i\tcatpure isp(yuv/rgb)\n");
+	printf("\t-v\tcatpure isp(h264)\n");
 }
 
 /* XXX crop & framerate not supported by current driver */
@@ -38,9 +39,10 @@ int main(int argc, char *argv[])
 	struct isp_attr attr;
 	struct isp_buffer buffer;
 	int o_isp = 0;
+	int o_h264 = 0;
 	int o_mjpeg = 0;
 
-	while ((ch = getopt(argc, argv, "hmr:i")) != -1) {
+	while ((ch = getopt(argc, argv, "himr:v")) != -1) {
 		switch (ch) {
 		case 'm':
 			o_mjpeg = 1;
@@ -50,6 +52,9 @@ int main(int argc, char *argv[])
 				printf("Error resolution format\n");
 				return -1;
 			}
+			break;
+		case 'v':
+			o_h264 = 1;
 			break;
 		case 'i':
 			o_isp = 1;
@@ -78,7 +83,9 @@ int main(int argc, char *argv[])
 	strcpy(attr.dev_name, DEVICE_NAME);
 	if (o_isp)
 		attr.fmt = USER_PIX_FMT_BGR24;
-	else
+	if (o_h264)
+		attr.fmt = USER_PIX_FMT_H264;
+	if (o_mjpeg)
 		attr.fmt = USER_PIX_FMT_MJPEG;
 
 
@@ -93,6 +100,12 @@ int main(int argc, char *argv[])
 	char isp_file[24];
 	FILE *fp_mjpeg;
 	FILE *fp_isp;
+	FILE *fp_h264;
+
+	if (o_h264) {
+		fp_h264 = fopen("out.h264", "w+");
+		count = 1200;
+	}
 
 	i = 0;
 
@@ -127,14 +140,20 @@ int main(int argc, char *argv[])
 			fclose(fp_isp);
 		}
 
-	printf("one frame[%d]\n", buffer.size);
+		if (o_h264)
+			fwrite(buffer.vm_addr, 1,
+					buffer.size, fp_h264);
+
+		printf("one frame[%d]\n", buffer.size);
 		user_isp_buffer_put(&buffer);
-	count--;
+		count--;
 	}
 
 	user_isp_chn_disable(isp_chn);
 
 	user_isp_chn_release(isp_chn);
+
+	fclose(fp_h264);
 
 	return 0;
 }
