@@ -7,7 +7,8 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
 link_directories($ENV{ROOT_DIR}/.yarina/share/lib)
 include_directories($ENV{ROOT_DIR}/.yarina/share/include)
 
-set(depend_lib userstream)
+set(depend_lib uservideo)
+set(depend_lib useraudio)
 file(GLOB SRC_LIST "*.c")
 
 include(pi_videocore.cmake)
