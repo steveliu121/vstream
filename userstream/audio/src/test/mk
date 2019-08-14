@@ -1,0 +1,1 @@
+~/ipcam_linux/sdk_v3.1_release/toolchain/rsdk/bin/rsdk-linux-gcc -o capture capture.c -I ~/ipcam_linux/sdk_v3.1_release/out/rts3903n_evb/staging/usr/include -L ~/ipcam_linux/sdk_v3.1_release/out/rts3903n_evb/staging/lib -lasound

@@ -2,9 +2,9 @@ BUILD_DIR := $(shell pwd)/build
 
 .PHONY: all install
 
-all: userv4l2 install
+all: lib install
 
-userv4l2:
+lib:
 	mkdir -p ${BUILD_DIR}
 	cd ${BUILD_DIR}; \
 	cmake ../.. \
